@@ -21,6 +21,9 @@ const NavBar = () => {
           style={{ width: "3rem", height: "3rem" }}
           variant="outline-primary"
           className="rounded-circle tw-mr-2 size-[1.5rem]"
+          onClick={() => {
+            openCart();
+          }}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
