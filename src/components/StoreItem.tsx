@@ -1,5 +1,7 @@
 import { Button, Card } from "react-bootstrap";
 import { formatCurrency } from "../utilities/formatCurrency";
+import { useShoppingCart } from "../context/ShoppingCartContext";
+
 type StoreItemProps = {
   id: number;
   name: string;
@@ -8,7 +10,13 @@ type StoreItemProps = {
 };
 
 const StoreItem = ({ id, name, price, imgUrl }: StoreItemProps) => {
-  const quantity = 1;
+  const {
+    getItemQuantity,
+    increaseCartQuantity,
+    decreaseCartQuantity,
+    removeFromCart,
+  } = useShoppingCart();
+  const quantity = getItemQuantity(id);
   return (
     <Card>
       <Card.Img
@@ -25,17 +33,38 @@ const StoreItem = ({ id, name, price, imgUrl }: StoreItemProps) => {
         </Card.Title>
         <div className="mt-auto">
           {quantity === 0 ? (
-            <Button className="w-100">+ Add To Cart</Button>
+            <Button
+              className="w-100"
+              onClick={() => {
+                increaseCartQuantity(id);
+              }}
+            >
+              + Add To Cart
+            </Button>
           ) : (
             <div className="tw-flex tw-flex-col tw-items-center tw-gap-[0.5rem]">
               <div className="tw-flex tw-flex-1 tw-justify-center tw-items-center tw-gap-[1rem]">
-                <Button>+</Button>
+                <Button
+                  onClick={() => {
+                    increaseCartQuantity(id);
+                  }}
+                >
+                  +
+                </Button>
                 <div>
                   <span className="fs-3">{quantity}</span> in cart
                 </div>
-                <Button>-</Button>
+                <Button
+                  onClick={() => {
+                    decreaseCartQuantity(id);
+                  }}
+                >
+                  -
+                </Button>
               </div>
-              <Button variant="danger">Remove</Button>
+              <Button variant="danger" onClick={() => removeFromCart(id)}>
+                Remove
+              </Button>
             </div>
           )}
         </div>
